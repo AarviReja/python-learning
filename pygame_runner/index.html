@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Runner</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let playerImage = new Image();
+        let backgroundImage = new Image();
+
+        playerImage.src = 'items_used/player.png'; // Change this to your path
+        backgroundImage.src = 'items_used/background.png'; // Change this to your path
+
+        playerImage.onload = () => {
+            ctx.drawImage(backgroundImage, 0, 0);
+            ctx.drawImage(playerImage, canvas.width / 2 - playerImage.width / 2, canvas.height - playerImage.height);
+        };
+
+        // Implement the game logic here
+        window.addEventListener('keydown', (event) => {
+            // Logic to move player
+        });
+    </script>
+</body>
+</html>
