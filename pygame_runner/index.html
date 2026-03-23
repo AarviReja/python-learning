@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pixel Runner</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -12,7 +11,8 @@
         }
         canvas {
             display: block;
-            margin: auto;
+            background: url('items_used/background.png') no-repeat;
+            background-size: cover;
         }
     </style>
 </head>
@@ -21,24 +21,45 @@
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
 
-        let playerImage = new Image();
-        let backgroundImage = new Image();
+        let player;
+        let items = [];
 
-        playerImage.src = 'items_used/player.png'; // Change this to your path
-        backgroundImage.src = 'items_used/background.png'; // Change this to your path
+        function setup() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            player = new Player();
+            // Load items or other game assets here
+        }
 
-        playerImage.onload = () => {
-            ctx.drawImage(backgroundImage, 0, 0);
-            ctx.drawImage(playerImage, canvas.width / 2 - playerImage.width / 2, canvas.height - playerImage.height);
+        class Player {
+            constructor() {
+                this.x = canvas.width / 2;
+                this.y = canvas.height - 60;
+                this.width = 50;
+                this.height = 50;
+                this.image = new Image();
+                this.image.src = 'items_used/player.png'; // Set player image source
+                this.image.onload = () => {
+                    this.draw();
+                };
+            }
+
+            draw() {
+                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+            }
+        }
+
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            player.draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        window.onload = () => {
+            setup();
+            gameLoop();
         };
-
-        // Implement the game logic here
-        window.addEventListener('keydown', (event) => {
-            // Logic to move player
-        });
     </script>
 </body>
 </html>
