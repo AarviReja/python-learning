@@ -40,7 +40,7 @@ jobs:
 
       - name: Build pygame_runner for web
         working-directory: pygame_runner
-        run: python -m pygbag --build . --disable-sound-format-error
+        run: python -m pygbag --disable-sound-format-error --build .
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
