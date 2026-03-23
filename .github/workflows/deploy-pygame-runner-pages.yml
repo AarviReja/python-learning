@@ -1,0 +1,52 @@
+name: Deploy Pixel Runner to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "pygame_runner/**"
+      - ".github/workflows/deploy-pygame-runner-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install web build tool
+        run: pip install pygbag
+
+      - name: Build pygame_runner for web
+        run: python -m pygbag --build pygame_runner
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: pygame_runner/build/web
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
