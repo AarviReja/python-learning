@@ -21,6 +21,8 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -37,7 +39,8 @@ jobs:
         run: pip install pygbag
 
       - name: Build pygame_runner for web
-        run: python -m pygbag --build pygame_runner
+        working-directory: pygame_runner
+        run: python -m pygbag --build .
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
